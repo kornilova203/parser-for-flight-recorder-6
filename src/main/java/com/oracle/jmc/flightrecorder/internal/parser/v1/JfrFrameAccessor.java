@@ -22,7 +22,7 @@ public class JfrFrameAccessor {
     private IMemberAccessor<Object, IItem> A3_2;
 
     public JfrFrameAccessor() throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
-        Class<?> itemBuilderClass = ClassLoader.getSystemClassLoader().loadClass("com.oracle.jmc.flightrecorder.internal.parser.ItemBuilder");
+        Class<?> itemBuilderClass = Class.forName("com.oracle.jmc.flightrecorder.internal.parser.ItemBuilder");
         Field f = itemBuilderClass.getDeclaredField("A3_2");
         f.setAccessible(true);
         //noinspection unchecked
