@@ -10,11 +10,17 @@ buildscript {
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
 apply plugin: 'java'
 apply plugin: 'application'
 
 mainClassName = 'com.github.kornilova_l.flight_parser.FlightParser'
 
 dependencies {
-
+    compile fileTree(dir: 'lib', include: ['com.oracle.jmc.flightrecorder_6.0.0.173472.jar'])
+    compile fileTree(dir: 'lib', include: ['com.oracle.jmc.common_6.0.0.173472.jar'])
+    testCompile group: 'junit', name: 'junit', version: '4.12'
 }
