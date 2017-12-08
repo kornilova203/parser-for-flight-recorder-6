@@ -8,7 +8,7 @@ FlightParser flightParser = new FlightParser(new File("my_recording.jfr"));
  * keys are stacktraces where method calls are separated by ';'
  * values are numbers that tell how many times this stacktrace was found in the recording
  */
-Map<String, Integer> stacks = flightParser.getStacks();
+Map<String, Integer> stacks = flightParser.getStacksMap();
 ```
 
 ## How to Build Jar File
