@@ -9,6 +9,7 @@ import com.oracle.jmc.flightrecorder.internal.parser.v1.JfrFrameAccessor;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -18,11 +19,12 @@ import java.util.Map;
  * and value is how many times this stack was present in the jfr file.
  */
 public class FlightParser {
-    private Map<String, Integer> stacks;
+    private Map<String, Integer> stacks = new HashMap<>();
 
     /**
      * @param file jfr file
      */
+    @SuppressWarnings("WeakerAccess")
     public FlightParser(File file) {
         validateFile(file);
         try {
@@ -30,7 +32,21 @@ public class FlightParser {
             buildStacks(collection);
         } catch (IOException | CouldNotLoadRecordingException e) {
             e.printStackTrace();
+            stacks = null;
         }
+    }
+
+    public Map<String, Integer> getStacksMap() {
+        return stacks;
+    }
+
+    public String getStacks() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String stack : stacks.keySet()) {
+            int num = stacks.get(stack);
+            stringBuilder.append(String.format("%s %d%n", stack, num));
+        }
+        return stringBuilder.toString();
     }
 
     private void validateFile(File file) {
@@ -51,6 +67,8 @@ public class FlightParser {
                 }
                 for (IItem iItem : iItems) {
                     String stack = jfrFrameAccessor.getStack(iItem);
+                    int value = stacks.computeIfAbsent(stack, s -> 0);
+                    stacks.put(stack, value + 1);
                 }
             }
         } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {

@@ -2,6 +2,7 @@ package com.oracle.jmc.flightrecorder.internal.parser.v1;
 
 import com.oracle.jmc.common.IMemberAccessor;
 import com.oracle.jmc.common.item.IItem;
+import com.oracle.jmc.common.util.FormatToolkit;
 import com.oracle.jmc.flightrecorder.internal.parser.v1.StructTypes.JfrFrame;
 import com.oracle.jmc.flightrecorder.internal.parser.v1.StructTypes.JfrStackTrace;
 
@@ -28,13 +29,14 @@ public class JfrFrameAccessor {
         A3_2 = (IMemberAccessor<Object, IItem>) f.get(null);
     }
 
-    public String getStack(IItem iItem) throws NoSuchFieldException, IllegalAccessException {
+    public String getStack(IItem iItem) {
         JfrStackTrace member = (JfrStackTrace) A3_2.getMember(iItem);
-        JfrFrame[] frames = (JfrFrame[]) member.frames;
+        Object[] frames = (Object[]) member.frames;
         List<String> methodCalls = new ArrayList<>(20);
-        for (JfrFrame frame : frames) {
-
+        for (int i = frames.length - 1; i >= 0; i--) {
+            JfrFrame frame = (JfrFrame) frames[i];
+            methodCalls.add(FormatToolkit.getHumanReadable(frame.getMethod()));
         }
-        return "";
+        return String.join(";", methodCalls);
     }
 }
