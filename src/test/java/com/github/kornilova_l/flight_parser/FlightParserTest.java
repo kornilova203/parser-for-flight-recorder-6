@@ -11,9 +11,16 @@ import static org.junit.Assert.assertEquals;
 
 public class FlightParserTest {
     @Test
-    public void simple() {
+    public void javaNine() {
         FlightParser flightParser = new FlightParser(new File("src/test/resources/recording_java9.jfr"));
-        String expected = readFile(new File("src/test/resources/expected.txt"));
+        String expected = readFile(new File("src/test/resources/expected_java9.txt"));
+        assertEquals(expected, flightParser.getStacks());
+    }
+
+    @Test
+    public void javaEight() {
+        FlightParser flightParser = new FlightParser(new File("src/test/resources/recording_java8.jfr"));
+        String expected = readFile(new File("src/test/resources/expected_java8.txt"));
         assertEquals(expected, flightParser.getStacks());
     }
 

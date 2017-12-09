@@ -1,10 +1,10 @@
 package com.oracle.jmc.flightrecorder.internal.parser.v1;
 
+import com.oracle.jmc.common.IMCFrame;
+import com.oracle.jmc.common.IMCStackTrace;
 import com.oracle.jmc.common.IMemberAccessor;
 import com.oracle.jmc.common.item.IItem;
 import com.oracle.jmc.common.util.FormatToolkit;
-import com.oracle.jmc.flightrecorder.internal.parser.v1.StructTypes.JfrFrame;
-import com.oracle.jmc.flightrecorder.internal.parser.v1.StructTypes.JfrStackTrace;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -30,11 +30,11 @@ public class JfrFrameAccessor {
     }
 
     public String getStack(IItem iItem) {
-        JfrStackTrace member = (JfrStackTrace) A3_2.getMember(iItem);
-        Object[] frames = (Object[]) member.frames;
+        IMCStackTrace member = (IMCStackTrace) A3_2.getMember(iItem);
+        List<? extends IMCFrame> frames = member.getFrames();
         List<String> methodCalls = new ArrayList<>(20);
-        for (int i = frames.length - 1; i >= 0; i--) {
-            JfrFrame frame = (JfrFrame) frames[i];
+        for (int i = frames.size() - 1; i >= 0; i--) {
+            IMCFrame frame = frames.get(i);
             methodCalls.add(FormatToolkit.getHumanReadable(frame.getMethod()));
         }
         return String.join(";", methodCalls);
