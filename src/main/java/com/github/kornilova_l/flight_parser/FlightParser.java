@@ -3,9 +3,11 @@ package com.github.kornilova_l.flight_parser;
 import com.oracle.jmc.common.item.IItem;
 import com.oracle.jmc.common.item.IItemCollection;
 import com.oracle.jmc.common.item.IItemIterable;
+import com.oracle.jmc.common.item.ItemFilters;
 import com.oracle.jmc.flightrecorder.CouldNotLoadRecordingException;
 import com.oracle.jmc.flightrecorder.JfrLoaderToolkit;
 import com.oracle.jmc.flightrecorder.internal.parser.v1.JfrFrameAccessor;
+import com.oracle.jmc.flightrecorder.jdk.JdkTypeIDs;
 
 import java.io.File;
 import java.io.IOException;
@@ -61,10 +63,11 @@ public class FlightParser {
     private void buildStacks(IItemCollection collection) {
         try {
             JfrFrameAccessor jfrFrameAccessor = new JfrFrameAccessor();
-            for (IItemIterable iItems : collection) {
-                if (iItems.getItemCount() == 0L || !iItems.getType().toString().contains("ExecutionSample")) {
-                    continue;
-                }
+
+            /* stacktraces are located in execution samples */
+            IItemCollection executionSamples = collection.apply(ItemFilters.type(JdkTypeIDs.EXECUTION_SAMPLE));
+
+            for (IItemIterable iItems : executionSamples) {
                 for (IItem iItem : iItems) {
                     String stack = jfrFrameAccessor.getStack(iItem);
                     int value = stacks.computeIfAbsent(stack, s -> 0);
