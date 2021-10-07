@@ -1,27 +1,28 @@
 package com.github.kornilova_l.flight_parser;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Scanner;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FlightParserTest {
     @Test
     public void javaNine() {
         FlightParser flightParser = new FlightParser(new File("src/test/resources/recording_java9.jfr"));
         String expected = readFile(new File("src/test/resources/expected_java9.txt"));
-        assertEquals(expected, flightParser.getStacks());
+        assertEquals(removeLineSeparator(Objects.requireNonNull(expected)), removeLineSeparator(flightParser.getStacks()));
     }
 
     @Test
     public void javaEight() {
         FlightParser flightParser = new FlightParser(new File("src/test/resources/recording_java8.jfr"));
         String expected = readFile(new File("src/test/resources/expected_java8.txt"));
-        assertEquals(expected, flightParser.getStacks());
+        assertEquals(removeLineSeparator(Objects.requireNonNull(expected)), removeLineSeparator(flightParser.getStacks()));
     }
 
     private String readFile(File file) {
@@ -35,5 +36,9 @@ public class FlightParserTest {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private String removeLineSeparator(String original) {
+        return original.replaceAll("\n", "").replaceAll("\r", "");
     }
 }

@@ -1,13 +1,13 @@
 package com.github.kornilova_l.flight_parser;
 
-import com.oracle.jmc.common.item.IItem;
-import com.oracle.jmc.common.item.IItemCollection;
-import com.oracle.jmc.common.item.IItemIterable;
-import com.oracle.jmc.common.item.ItemFilters;
-import com.oracle.jmc.flightrecorder.CouldNotLoadRecordingException;
-import com.oracle.jmc.flightrecorder.JfrLoaderToolkit;
 import com.oracle.jmc.flightrecorder.internal.parser.v1.JfrFrameAccessor;
-import com.oracle.jmc.flightrecorder.jdk.JdkTypeIDs;
+import org.openjdk.jmc.common.item.IItem;
+import org.openjdk.jmc.common.item.IItemCollection;
+import org.openjdk.jmc.common.item.IItemIterable;
+import org.openjdk.jmc.common.item.ItemFilters;
+import org.openjdk.jmc.flightrecorder.CouldNotLoadRecordingException;
+import org.openjdk.jmc.flightrecorder.JfrLoaderToolkit;
+import org.openjdk.jmc.flightrecorder.jdk.JdkTypeIDs;
 
 import java.io.File;
 import java.io.IOException;

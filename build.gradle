@@ -1,11 +1,7 @@
 buildscript {
     repositories {
-        jcenter()
         maven {
             url "https://plugins.gradle.org/m2/"
-        }
-        maven {
-            url 'http://dl.bintray.com/jetbrains/intellij-plugin-service'
         }
     }
 }
@@ -20,11 +16,20 @@ apply plugin: 'application'
 mainClassName = 'com.github.kornilova_l.flight_parser.FlightParser'
 
 dependencies {
-    compile fileTree(dir: 'lib', include: ['com.oracle.jmc.flightrecorder_6.0.0.173472.jar'])
-    compile fileTree(dir: 'lib', include: ['com.oracle.jmc.common_6.0.0.173472.jar'])
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation('org.openjdk.jmc:flightrecorder:8.1.0')
+    implementation('org.openjdk.jmc:common:8.1.0')
+
+    testImplementation(platform('org.junit:junit-bom:5.8.1'))
+    testImplementation('org.junit.jupiter:junit-jupiter:5.8.1')
+}
+
+test {
+    useJUnitPlatform()
 }
 
 jar {
-    from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    from {
+        configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }
+    }
+    duplicatesStrategy(DuplicatesStrategy.INCLUDE)
 }
