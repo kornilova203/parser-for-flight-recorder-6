@@ -1,10 +1,10 @@
 package com.oracle.jmc.flightrecorder.internal.parser.v1;
 
-import com.oracle.jmc.common.IMCFrame;
-import com.oracle.jmc.common.IMCStackTrace;
-import com.oracle.jmc.common.IMemberAccessor;
-import com.oracle.jmc.common.item.IItem;
-import com.oracle.jmc.common.util.FormatToolkit;
+import org.openjdk.jmc.common.IMCFrame;
+import org.openjdk.jmc.common.IMCStackTrace;
+import org.openjdk.jmc.common.item.IItem;
+import org.openjdk.jmc.common.item.IMemberAccessor;
+import org.openjdk.jmc.common.util.FormatToolkit;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class JfrFrameAccessor {
     private IMemberAccessor<Object, IItem> A3_2;
 
     public JfrFrameAccessor() throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
-        Class<?> itemBuilderClass = Class.forName("com.oracle.jmc.flightrecorder.internal.parser.ItemBuilder");
+        Class<?> itemBuilderClass = Class.forName("org.openjdk.jmc.flightrecorder.internal.parser.ItemBuilder");
         Field f = itemBuilderClass.getDeclaredField("A3_2");
         f.setAccessible(true);
         //noinspection unchecked
